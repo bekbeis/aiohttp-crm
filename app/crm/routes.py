@@ -1,12 +1,21 @@
 import typing
 
-from app.web.app import Application
-from app.crm.views import AddUserView
-
+# Условно: если идет проверка типов, то импортируем. В обратном случае, нет.
+# Почему вообще это надо? Мы импортируем Application и напрямую, и цепочкой импортов через AddUserView.
+# Программе (?) может быть непонятно, что и откуда тянуть первым.
+if typing.TYPE_CHECKING:
+    from app.web.app import Application
 
 # Установка роутов. Чтобы они работали,
 # нужно эту функцию вызвать
-def setup_routes(app: Application):
+
+# Поставили в ковычки, так как нам не нужно работать
+# непосредственно с этим классом. Нам нужно только знать
+# его методы, чтобы были подсказки.
+
+
+def setup_routes(app: "Application"):
+    from app.crm.views import AddUserView
     # Если на страницу /page_name приходит GET-запрос,
     # то он попадет в нашу функцию function_name из views.py
     # выгдлядит это примерно так:

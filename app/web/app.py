@@ -2,6 +2,9 @@ from aiohttp.web import Application as AiohttpApplicatoin, run_app as aiohttp_ru
 from aiohttp.web_app import Application
 from aiohttp.web_request import Request
 from app.web.routes import setup_routes
+from app.store.crm.accessor import CrmAccessor
+from app.store import setup_accessors
+from typing import Optional
 
 # Переопределяем класс Application, чтобы добавить в него поле database,
 # куда мы будем сохранять данные. Доступ к этому полю будет во всех
@@ -10,6 +13,7 @@ from app.web.routes import setup_routes
 
 class Application(AiohttpApplicatoin):
     database: dict = {}
+    crm_accessor: Optional[CrmAccessor] = None
 
 
 # Переопределяем классы Request и View, чтобы добавить в них корректные
@@ -33,4 +37,5 @@ app = Application()
 
 def run_app():
     setup_routes(app)
+    setup_accessors(app)
     aiohttp_run_app(app)
